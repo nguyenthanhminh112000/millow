@@ -7,23 +7,36 @@ import Search from './components/Search';
 import Home from './components/Home';
 
 // ABIs
-import RealEstate from './abis/RealEstate.json'
-import Escrow from './abis/Escrow.json'
+import RealEstate from './abis/RealEstate.json';
+import Escrow from './abis/Escrow.json';
 
 // Config
 import config from './config.json';
 
 function App() {
+  const [account, setAccount] = useState(null);
+
+  const loadBlockChainData = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    console.log('provider', provider);
+
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    console.log('accounts', accounts);
+
+    setAccount(accounts[0]);
+  };
+
+  console.log('account', account);
+
+  useEffect(() => {
+    loadBlockChainData();
+  }, []);
 
   return (
     <div>
-
-      <div className='cards__section'>
-
+      <div className="cards__section">
         <h3>Welcome to Millow</h3>
-
       </div>
-
     </div>
   );
 }
