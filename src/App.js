@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import Navigation from './components/Navigation';
 import Search from './components/Search';
 import Home from './components/Home';
-
+import { HomeCard } from './components/home-card';
 // ABIs
 import RealEstate from './abis/RealEstate.json';
 import Escrow from './abis/Escrow.json';
@@ -71,26 +71,8 @@ function App() {
         <div className="cards">
           {homes &&
             homes.map((home) => {
-              const { name, address, description, id, image, attributes } = home;
-              const [purchasePrice, typeOfResidence, bedRooms, bathRooms, squareFeet, yearBuild] =
-                attributes;
-
-              return (
-                <div className="card" key={id}>
-                  <div className="card__image">
-                    <img alt="Home" src={image} />
-                  </div>
-
-                  <div className="card__info">
-                    <h4>{purchasePrice.value} ETH</h4>
-                    <p>
-                      <strong>{bedRooms.value}</strong> bds |<strong>{bathRooms.value}</strong> ba |
-                      <strong>{squareFeet.value}</strong> sqft
-                    </p>
-                    <p>{address}</p>
-                  </div>
-                </div>
-              );
+              const { id } = home;
+              return <HomeCard home={home} key={id} />;
             })}
         </div>
       </div>
