@@ -12,21 +12,20 @@ import Escrow from './abis/Escrow.json';
 
 // Config
 import config from './config.json';
+import { async } from 'q';
 
 function App() {
   const [account, setAccount] = useState(null);
 
   const loadBlockChainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    console.log('provider', provider);
+    window.ethereum.on('accountsChanged', async () => {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    console.log('accounts', accounts);
-
-    setAccount(accounts[0]);
+      const account = ethers.utils.getAddress(accounts[0]);
+      setAccount(account);
+    });
   };
-
-  console.log('account', account);
 
   useEffect(() => {
     loadBlockChainData();
@@ -34,6 +33,7 @@ function App() {
 
   return (
     <div>
+      <Navigation account={account} setAccount={setAccount} />
       <div className="cards__section">
         <h3>Welcome to Millow</h3>
       </div>
